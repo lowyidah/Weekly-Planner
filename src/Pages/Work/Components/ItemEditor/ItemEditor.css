@@ -1,0 +1,78 @@
+textarea {
+    resize: vertical;
+}
+
+.itemEditorBody {
+    z-index: 2;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    position: fixed;
+
+    display: grid;
+    grid-template-columns: minmax(600px, 1fr);
+}
+
+.ItemEditorWrapper {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 120px;
+    padding-bottom: 120px;
+
+    display: grid;
+    grid-template-columns: minmax(75px, 1fr) minmax(450px, 750px) minmax(75px, 1fr);
+}
+
+.ItemEditorWindow {
+    width: 100%;
+    height: 100%;
+    padding: 45px 7% 25px 7%;
+    grid-column: 2 / 3;
+    
+    display: grid;
+    column-gap: 2%;
+    grid-template-columns: 120px 120px 1fr auto auto;
+    grid-template-rows: auto auto auto 1fr auto;
+
+}
+
+
+.cancelChange {
+    grid-column: 4 / 5;
+    justify-self: right;
+}
+
+.saveChange {
+    grid-column: 5 / 6;
+    justify-self: right;
+}
+
+.detailsLabel {
+    grid-column: 1 / 6;
+    margin: 1rem 0 0 0.3rem;
+}
+
+.description, .details{
+    grid-column: 1 / 6;
+    margin: 0 0 1rem 0;
+}
+
+
+.dateTimeEditorWrapper {
+    grid-column: 3 / 6;
+    display: grid;
+    grid-template-columns: minmax(100px, 230px);
+}
+
+
+.time {
+    display: flex;
+    width: 70px;
+}
+
+.timeLabel {
+    display: flex;
+    align-items: center;
+}
+

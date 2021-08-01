@@ -1,0 +1,9 @@
+.itemList {
+    display: block;
+    padding-right: 8%;
+    padding-left: 8%;
+}
+
+.listName {
+    font-size: 1.8rem;
+}

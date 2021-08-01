@@ -1,0 +1,43 @@
+.workWrapper {
+    display: grid;
+    grid-template-columns: minmax(800px, 1fr);
+}
+
+.threeLists {
+    display: grid;
+    gap: 1.8%;
+    grid-template-columns: repeat(3, 1fr);
+    color: #f5f5f5;
+}
+
+
+.titleSummary {
+    padding: 0 3.7%;
+    color: #f5f5f5;
+}
+
+.titleWork {
+    padding: 0 2.5%;
+    color: #f5f5f5;
+}
+
+.workBody {
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+
+
+.summaryWrapper {
+    display: grid;
+    grid-template-columns: minmax(530px, 1fr);
+} 
+
+.twoLists {
+    display: grid;
+    gap: 2.5%;
+    grid-template-columns: repeat(2, 1fr);
+    color: #f5f5f5;
+}
+
+

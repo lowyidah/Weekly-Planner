@@ -1,0 +1,56 @@
+.itemBox {
+    display: grid;
+    grid-template-columns: 20px 1fr 20px;
+    opacity: 100%;
+    min-height: 6.7rem;
+    padding-left: 5%;
+    padding-right: 5%;
+    padding-top: 5%;
+    padding-bottom: 5%;
+}
+
+.itemDescription {
+    padding-left: 6%;
+    padding-right: 6%;
+    cursor: pointer;
+}
+
+.arrows {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    position: relative;
+    text-align: center;
+    font-size: 1.2rem;
+    justify-items: center;
+}
+
+.downArrow {
+    position: absolute;
+    bottom: 0;
+}
+
+.upArrow {
+    position: absolute;
+    top: 0;
+}
+
+.rightButtons {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    position: relative;
+    text-align: center;
+    font-size: 1.2em;
+    justify-items: center;
+}
+
+.deleteButton {
+}
+
+.doButton {
+}
+
+.doneButton {
+    height: 25px
+}

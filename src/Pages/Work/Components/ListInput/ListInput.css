@@ -1,0 +1,20 @@
+textarea {
+    resize: vertical;
+}
+
+.listInput {
+    display: grid;
+    row-gap: 15px;
+    column-gap: 1.5%;
+    grid-template-columns: 1fr 100px 100px auto;
+    padding-left: 3%;
+    padding-right: 3%;
+}
+
+.dateTimeWrapper {
+    grid-column: 2 / 4;
+}
+
+.dateTime {
+    width: 203px;
+}
