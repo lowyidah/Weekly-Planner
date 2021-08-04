@@ -14,7 +14,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
         draggableEls.forEach(draggableEl => {
             new Draggable(draggableEl, {
                 itemSelector: ".todo-item",
-                eventData: function(eventEl) {
+                eventData: (eventEl) => {
                     let durationMilliSeconds;
                     if (parseInt(eventEl.getAttribute("duration")) === 0) {
                         durationMilliSeconds = undefined;
@@ -22,9 +22,11 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
                     else {
                         durationMilliSeconds = parseInt(eventEl.getAttribute("duration"));
                     }
+                    if (durationMilliSeconds > 10800000) {
+                        durationMilliSeconds = 10800000;
+                    }
 
                     let borderColor, backgroundColor;
-
                      if (eventEl.getAttribute("category") === 'work') {
                         borderColor = '#f5511d';
                         backgroundColor = '#f5511d';
@@ -33,12 +35,12 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
                         borderColor = '#f6c026';
                         backgroundColor = '#f6c026';
                     }
-
+                   
                     return {
                         title: eventEl.getAttribute("title"),
                         duration: durationMilliSeconds,
                         details: eventEl.getAttribute("details"),
-                        id: eventEl.getAttribute("id"),
+                        id: eventEl.getAttribute("id") + " Item",
                         dueLocal: eventEl.getAttribute("duelocal"),
                         category: eventEl.getAttribute("category"),
                         borderColor: borderColor,
@@ -49,9 +51,9 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
         })
     }, [])
 
-
-    const eventManipulate = (info) => {
-        const eventId = info.event.id;
+    const eventManipulate = async (info, action) => {
+        const itemId = info.event.id;
+        let id;
         const category = info.event.extendedProps.category;
         const eventStartTime = info.event.startStr;
         const eventEndTime = info.event.endStr;
@@ -62,33 +64,58 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
             durationHours = '';
             durationMins = '';
         }
-        fetch('http://localhost:3000/transferitem', {
+
+        if (action === 'receive') {
+            await fetch('http://localhost:3000/scheduleitem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                id: eventId,
+                id: itemId.split(" ")[0],
                 startTime: eventStartTime,
                 endTime: eventEndTime,
                 hours: durationHours,
-                mins: durationMins,
-                listTo: 'doingitems'
+                mins: durationMins
             })
-        })
-        .then(loadItems)
-        .catch(err => console.log('Error logging into gcal:', err));
+            })
+            .then(response => response.json())
+            .then(idRec => {
+                calendarRef.current.getApi().getEventById(itemId).setProp('id', idRec);
+                id = idRec;
+            })
+            .then(loadItems)
+            .catch(err => console.log('Error scheduling item:', err));                                          
+        }
+
+        else if (action === 'manipulate') {
+            id = itemId;
+            fetch('http://localhost:3000/updatecalendaritem', {
+            method: 'post',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                id: id,
+                starttime: eventStartTime,
+                endtime: eventEndTime,
+                hours: durationHours,
+                mins: durationMins,
+            })
+            })
+            .then(loadItems)
+            .catch(err => console.log('Error logging into gcal:', err));
+        }
 
         if (new Date(eventEndTime) - Date.now() < 0) {
-            calendarRef.current.getApi().getEventById(eventId).setProp('backgroundColor', '#d60000');
-            calendarRef.current.getApi().getEventById(eventId).setProp('borderColor', '#d60000');
+            calendarRef.current.getApi().getEventById(id).setProp('backgroundColor', '#d60000');
+            calendarRef.current.getApi().getEventById(id).setProp('borderColor', '#d60000');
         }
         else if (category === 'work') {
-            calendarRef.current.getApi().getEventById(eventId).setProp('backgroundColor', '#f5511d');
-            calendarRef.current.getApi().getEventById(eventId).setProp('borderColor', '#f5511d');
+            calendarRef.current.getApi().getEventById(id).setProp('backgroundColor', '#f5511d');
+            calendarRef.current.getApi().getEventById(id).setProp('borderColor', '#f5511d');
         }
         else if (category === 'errand') {
-            calendarRef.current.getApi().getEventById(eventId).setProp('backgroundColor', '#f6c026');
-            calendarRef.current.getApi().getEventById(eventId).setProp('borderColor', '#f6c026');
+            calendarRef.current.getApi().getEventById(id).setProp('backgroundColor', '#f6c026');
+            calendarRef.current.getApi().getEventById(id).setProp('borderColor', '#f6c026');
         }
+
     }
 
     const eventClick = (eventClickInfo) => {
@@ -97,7 +124,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
 
 
     return (
-        <div className='w-80 pa3 ma3 br2 calendar'>  
+        <div className='calendar'>  
             <FullCalendar
                 ref={calendarRef}
                 plugins={[ dayGridPlugin, interactionPlugin, timeGridPlugin ]}
@@ -116,9 +143,9 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
                 dayMaxEvents='true' // when too many events in a day, show the popover
                 droppable='true'
                 forceEventDuration='true'
-                eventReceive={eventManipulate}
-                eventResize={eventManipulate}
-                eventDrop={eventManipulate}
+                eventReceive={info => eventManipulate(info, 'receive')}
+                eventResize={info => eventManipulate(info, 'manipulate')}
+                eventDrop={info => eventManipulate(info, 'manipulate')}
                 //eventDragStop={eventManipulate}
                 // ref={this.calendarComponentRef}
                 eventClick={(eventClickInfo) => eventClick(eventClickInfo)}

@@ -1,0 +1,31 @@
+.calItemBox {
+    padding: 0.2rem 3% 0.2rem 3%;
+    margin-top: 0.5rem;
+
+    display: grid;
+    row-gap: 0.1rem;
+    grid-template-columns: auto 5fr 3fr ;
+    grid-template-rows: auto 1fr;
+    align-items: center;
+}
+
+.calIconWrapper {
+    grid-column: 1 / 2;
+    grid-row: 1 / 3;
+    display: flex;
+    align-items: center;
+}
+
+.calIcon {
+    width: 30px;
+    margin-right: 0.3rem;
+}
+
+.calItemDescription {
+    padding-left: 0.2rem;
+    grid-column: 2 / 4;
+}
+
+.calDue {
+    padding-left: 0.2rem;
+}

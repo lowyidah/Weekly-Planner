@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import Item from '../Item/Item.js';
+import './Itemlist.css'
 
-const Itemlist = ({ listName, user, loadItems, items, openPopup, generateDate }) => {
+const Itemlist = ({ listType, user, loadItems, items, openPopup, generateDate }) => {
 
     useEffect(() => {
         if (user) {
@@ -8,7 +10,15 @@ const Itemlist = ({ listName, user, loadItems, items, openPopup, generateDate })
         }
     }, [loadItems, user])
 
-    const duration = (hours, mins) => {
+    let listName;
+    if (listType === 'todo') {
+        listName = "To Do";
+    }
+    else if (listType === 'doing') {
+        listName = 'Doing';
+    }
+
+    const durationFunc = (hours, mins) => {
         let duration;
         if (hours === '' && mins === '') {
             duration = null;
@@ -40,9 +50,23 @@ const Itemlist = ({ listName, user, loadItems, items, openPopup, generateDate })
     }
 
     return (
-        <div className='external-events w-100 pa2 ma2'>
-            <h2> {listName} </h2>
+        <div className='bg-black-50 calItemList mb2 br2 external-events'>
+            <div className="f3 fw6 white calListName"> {listName} </div>
             {items.map((item, i) => {
+                return <Item item={item} i={i} openPopup={openPopup}
+                listType={listType} durationFunc={durationFunc} generateDate={generateDate}/>
+            })}
+        </div>
+    );
+}
+
+export default Itemlist;
+
+/* let icon = null;
+                if (item.starttime) {
+                    icon = <img src='to-do-list.png' className='h-10 w-10'/>;
+                }
+
                 let durationMilliSeconds;
                 if(!item.hours && !item.mins){
                     durationMilliSeconds = 0;
@@ -68,7 +92,7 @@ const Itemlist = ({ listName, user, loadItems, items, openPopup, generateDate })
                 return (
                 <div
                     style={{backgroundColor: bgColor}}
-                    className="todo-item bg-black-50 br1 ma1 pa1 button"
+                    className="todo-item bg-black-50 br1 ma1 pa1 button w-100"
                     title={item.description}
                     duration={durationMilliSeconds}
                     details={item.details}
@@ -77,18 +101,13 @@ const Itemlist = ({ listName, user, loadItems, items, openPopup, generateDate })
                     key={i}
                     category={item.category}
                     duelocal={dueLocal}
-                    onClick={() => openPopup(item.id)}
+                    onClick={() => openPopup(item.id, listType)}
                 >
+                    {icon}
                     <div className='w-100'>{item.description}</div>
                     <div className='flex'>
                         <div className='w-70' style={{backgroundColor: dueBgColor}}>{dueLocal} </div>
                         <div className='w-30'>{duration(item.hours, item.mins)}</div>
                     </div>
                 </div>
-                );
-            })}
-        </div>
-    );
-}
-
-export default Itemlist;
+                ); */

@@ -18,3 +18,7 @@ textarea {
 .dateTime {
     width: 203px;
 }
+
+.listInputDescription {
+    height: 1.3rem;
+}

@@ -1,6 +1,9 @@
 .workWrapper {
     display: grid;
     grid-template-columns: minmax(800px, 1fr);
+    grid-template-rows: auto 1fr;
+    position: relative;
+    min-height: 100%;
 }
 
 .threeLists {
@@ -12,7 +15,7 @@
 
 
 .titleSummary {
-    padding: 0 3.7%;
+    padding: 1.5rem 3.7% 1.5rem 3.7%;
     color: #f5f5f5;
 }
 
@@ -24,13 +27,16 @@
 .workBody {
     padding-left: 3%;
     padding-right: 3%;
+    padding-bottom: 5rem;
+    min-height: 100%;
 }
-
-
 
 .summaryWrapper {
     display: grid;
     grid-template-columns: minmax(530px, 1fr);
+    grid-template-rows: auto 1fr;
+    position: relative;
+    min-height: 100%;
 } 
 
 .twoLists {

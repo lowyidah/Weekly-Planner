@@ -4,6 +4,17 @@ import './Item.css'
 const Item = ({ id, description, hours, mins, category, onButtonDelete, 
     onButtonTransfer, onButtonReorder, onButtonOpenPopup, due, itemType }) => {
 
+    let list
+    if(itemType === 'todo') {
+        list = 'items';
+    }
+    else if (itemType === 'doing') {
+        list = 'doingitems';
+    }
+    else if (itemType === 'done') {
+        list = 'doneitems';
+    }
+
     let color;
     if (category === 'work') {
         color = '#f5511d';
@@ -103,21 +114,21 @@ const Item = ({ id, description, hours, mins, category, onButtonDelete,
 
     let dueBgColor = null;
     if ((new Date(due) - Date.now() < 86400000) && (due)) {
-        dueBgColor = '#f70505';
+        dueBgColor = '#e30000';
     }
 
     return(
         <div className="bg-black-50 mv3 br2 itemBox" style={{backgroundColor: color}}> 
             <div className="arrows">
                 <div className="button upArrow grow" 
-                onClick={() => onButtonReorder(id, 'up')}>&#x25B2;</div>
+                onClick={() => onButtonReorder(id, 'up', list)}>&#x25B2;</div>
                 <div className="button downArrow grow" 
-                onClick={() => onButtonReorder(id, 'down')}>&#x25BC;</div>
+                onClick={() => onButtonReorder(id, 'down', list)}>&#x25BC;</div>
             </div>
             <div className="itemDescription" onClick={() => onButtonOpenPopup(itemType, id)}>   
                 <div className=''> {description} </div>
                 {duration}
-                <div className='br3 pa1' style={{backgroundColor: dueBgColor}}>{generateDate(due)}</div>
+                <div className='br3 pa1 dib' style={{backgroundColor: dueBgColor}}>{generateDate(due)}</div>
             </div>
             {rightButtons(itemType)}
         </div>

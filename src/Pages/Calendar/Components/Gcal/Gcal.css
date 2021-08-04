@@ -1,3 +1,19 @@
-.gcal-wrapper {
-    display: flex;
+.gcalWrapper {
+    margin: 1rem 0 0 0;
+    padding: 1rem 3% 1rem 3%;
+
+    display: grid;
+    gap: 1rem;
+    align-items: center;
+    justify-items: center;
+    grid-template-columns: 1fr auto auto auto;
+}
+
+.signinLabel {
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.syncGcalButtons {
+    padding: 0.9rem 0.8rem
 }

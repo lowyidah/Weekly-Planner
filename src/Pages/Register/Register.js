@@ -1,4 +1,6 @@
 import React, { useEffect } from 'react';
+import Footer from '../../Components/Footer/Footer.js';
+import './Register.css'
 
 const Register = ({ changeRoute, setUser, reloadUser }) => {
 
@@ -53,35 +55,36 @@ const Register = ({ changeRoute, setUser, reloadUser }) => {
     }
 
     return(
-        <article className="pa4 black-80">
-            <div className="measure center">
-                <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                <legend className="f4 fw6 ph0 mh0">Register</legend>
-                <div className="mt3">
-                    <label className="db fw4 lh-copy f6" htmlFor="email-address">Email address</label>
-                    <input className="pa2 input-reset ba bg-transparent w-100 measure" onChange={onEmailChange}
+        <div className='registerPage'>
+            <div className="br3 ba b--black-10 pa4 shadow-3 center registerBox">   
+                <legend className="f3 fw6 ph0 mh0 center">Register</legend>
+
+                <div className="mt4">
+                    <label className="db fw6 f6 pb2" htmlFor="email-address">Email address</label>
+                    <input className="pa2 input-reset ba b--mid-gray bg-transparent hover-bg-black-70 hover-white w-100 registerInputField" onChange={onEmailChange}
                     type="email" name="email-address" id="email-address" onKeyPress={onKeyPress}/>
                 </div>
                 <div className="mt3">
-                    <label className="db fw4 lh-copy f6" htmlFor="username">Username</label>
-                    <input className="pa2 input-reset ba bg-transparent" onChange={onUsernameChange}
+                    <label className="db fw6 f6 pb2" htmlFor="username">Username</label>
+                    <input className="pa2 input-reset ba b--mid-gray bg-transparent hover-bg-black-70 hover-white w-100 registerInputField" onChange={onUsernameChange}
                     type="text" name="username" id="username" onKeyPress={onKeyPress}/>
                 </div>
-                <div className="mt3">
-                    <label className="db fw4 lh-copy f6" htmlFor="password">Password</label>
-                    <input className="b pa2 input-reset ba bg-transparent" onChange={onPasswordChange}
+                <div className="mt3 mb4">
+                    <label className="db fw6 f6 pb2" htmlFor="password">Password</label>
+                    <input className="pa2 input-reset ba b--mid-gray bg-transparent hover-bg-black-70 hover-white w-100 registerInputField" onChange={onPasswordChange}
                     type="password" name="password"  id="password" onKeyPress={onKeyPress}/>
+                </div>       
+                
+                <div className="center">
+                    <div className="b ph3 pv2 ba b--black bg-transparent button f6 hover-bg-black-20" 
+                    onClick={onButtonRegister} type="submit">Register</div>
                 </div>
-                </fieldset>
-                <div className="mt3">
-                    <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6" 
-                    onClick={onButtonRegister} type="submit" value="Register"/>
-                </div>
-                <div className="lh-copy mt3 button">
-                    <p onClick={() => changeRoute('/signin')} className="f6 link dim black db">Sign in</p>
+                <div className="center">
+                    <div onClick={() => changeRoute('/signin')} className="mt2 button f6 black underline">Sign in</div>
                 </div>
             </div>
-        </article>
+            <Footer/>
+        </div>
     )
 }
 

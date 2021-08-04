@@ -83,7 +83,7 @@ const App = () => {
     }
 
     return(
-        <div>
+        <div className='websiteBody'>
             <Particles className="particles"
             params={particlesOptions}
             />

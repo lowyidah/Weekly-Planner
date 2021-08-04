@@ -1,0 +1,24 @@
+.registerPage {
+    height: 100%;
+    display: grid;
+    gap: 25px;
+    grid-template-columns: minmax(500px, 1fr);
+    justify-items: center;
+}
+
+.registerBox {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    text-align: center;
+    align-self: center;
+    width: 20rem;
+}
+
+.logo {
+    width: 5rem;
+}
+
+.registerInputField {
+    height: 2.2rem;
+}

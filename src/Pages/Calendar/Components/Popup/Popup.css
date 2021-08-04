@@ -1,19 +1,76 @@
-.PopupWrapper {
+.calPopupBody {
     z-index: 2;
     left: 0;
     right: 0;
     top: 0;
     bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    position: fixed;
+
+    display: grid;
+    grid-template-columns: minmax(600px, 1fr);
 }
 
-.PopupWindow {
-    width: 50%;
-    height: 50%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
+.calPopupWrapper {
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 120px;
+    padding-bottom: 120px;
+
+    display: grid;
+    grid-template-columns: minmax(75px, 1fr) minmax(450px, 750px) minmax(75px, 1fr);
+}
+
+.calPopupWindow {
+    width: 100%;
+    height: 100%;
+    padding: 45px 7% 25px 7%;
+    grid-column: 2 / 3;
+    
+    display: grid;
+    column-gap: 3%;
+    grid-template-columns: 1fr auto auto auto;
+    grid-template-rows: auto 1fr auto;
+}
+
+.calPopupDetailsLabel, .calPopupDetails {
+    grid-column: 1 / 5;
+}
+
+.completedButtonWrapper {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+}
+
+.unscheduleButtonWrapper {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+.unscheduleButtonWrapper2 {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+}
+
+.closeButtonWrapper {
+    grid-column: 4 / 5;
+    align-self: end;
+}
+
+.completedButton {
+    background-color: #33b679;
+}
+
+.notCompletedButtonWrapper {
+    grid-column: 3 / 4;
+}
+
+.notCompletedButton {
+    background-color: #f59f00;;
+}
+
+.unscheduleButton {
+    background-color: #d60000;
+}
+
+.unscheduleButton2 {
+    background-color: #d60000;
 }

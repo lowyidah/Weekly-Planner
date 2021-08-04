@@ -1,0 +1,31 @@
+.signinPage {
+    height: 100%;
+    display: grid;
+    gap: 25px;
+    grid-template-columns: minmax(500px, 1fr);
+    grid-template-rows: 9rem 1fr;
+    justify-items: center;
+}
+
+.signinBox {
+    display: grid;
+    grid-template-columns: 1fr;
+    justify-content: center;
+    text-align: center;
+    align-self: start;
+    width: 20rem;
+}
+
+.logo {
+    width: 5rem;
+}
+
+.signinTitle {
+    align-self: end;
+    display: flex;
+    align-items: center;
+}
+
+.signinInputField {
+    height: 2.2rem;
+}

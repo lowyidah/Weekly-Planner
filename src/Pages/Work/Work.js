@@ -1,8 +1,9 @@
 import './Work.css';
 import React, { useState, useEffect, useCallback } from 'react';
 import Navigation from '../../Components/Navigation/Navigation.js';
+import Footer from '../../Components/Footer/Footer.js';
 import ListInput from './Components/ListInput/ListInput.js';
-import ItemEditor from './Components/ItemEditor/ItemEditor.js';
+import ItemEditor from '../../Components/ItemEditor/ItemEditor.js';
 import ItemList from './Components/ItemList/ItemList.js';
 
 
@@ -234,7 +235,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     .catch(err => console.log('Error transfering item to other list:', err));
   }
 
-  const onButtonReorder = (id, direction) => {
+  const onButtonReorder = (id, direction, list) => {
     fetch('http://localhost:3000/reorderitems', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
@@ -242,10 +243,11 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
         user_id: user.id,
         id: id,
         direction: direction,
-        category: category
+        category: category,
+        list: list
       })
     })
-    .then(() => loadItems())
+    .then(() => loadAllItems())
     .catch(err => console.log('Error reordering items:', err));
   }
 
@@ -319,12 +321,14 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     );
     itemEditor = null;
     wrapper = 'summaryWrapper';
-    title = <div className='f2 fw5 pv3 mv2 br3 titleSummary'>Summary</div>;
+    title = <div className='f2 fw5 mv2 br3 titleSummary'>Summary</div>;
   }
 
   return (
     <div className={wrapper}>
-      <Navigation changeRoute={changeRoute} signOut={signOut} username={user.username} currentPage={pageType}/>
+      <div>
+        <Navigation changeRoute={changeRoute} signOut={signOut} username={user.username} currentPage={pageType}/>
+      </div>
       <div className='workBody'>
         {title}
         {itemEditor}
@@ -337,6 +341,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
         }
         {list}
       </div>
+      <Footer/>
     </div>
   );
   

@@ -5,18 +5,15 @@ import './ItemList.css';
 
 const ItemList = ({ listType, onButtonOpenPopup, onButtonReorder, onButtonTransfer, onButtonDelete, items }) => {
 
-    let listName, itemType;
+    let listName;
     if(listType === 'todo') {
         listName = 'To Do';
-        itemType = 'items';
     }
     else if (listType === 'doing') {
         listName = 'Doing';
-        itemType = 'doingitems';
     }
     else if (listType === 'done') {
         listName = 'Done';
-        itemType = 'doneitems';
     }
     return(
         <div className='br3 pv3 bg-black-50 itemList'>

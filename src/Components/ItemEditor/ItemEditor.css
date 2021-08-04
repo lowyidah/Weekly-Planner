@@ -11,7 +11,7 @@ textarea {
     position: fixed;
 
     display: grid;
-    grid-template-columns: minmax(600px, 1fr);
+    grid-template-columns: minmax(580px, 1fr);
 }
 
 .ItemEditorWrapper {
@@ -21,7 +21,7 @@ textarea {
     padding-bottom: 120px;
 
     display: grid;
-    grid-template-columns: minmax(75px, 1fr) minmax(450px, 750px) minmax(75px, 1fr);
+    grid-template-columns: minmax(50px, 1fr) minmax(450px, 750px) minmax(50px, 1fr);
 }
 
 .ItemEditorWindow {
@@ -56,6 +56,7 @@ textarea {
 .description, .details{
     grid-column: 1 / 6;
     margin: 0 0 1rem 0;
+    height: 1.2rem;
 }
 
 
@@ -76,3 +77,25 @@ textarea {
     align-items: center;
 }
 
+.toggleButtons {
+    grid-column: 1 / 4;
+
+    display: grid;
+    gap: 5%;
+    grid-template-columns: 1fr auto auto auto;
+}
+
+.IECompleteButton {
+    grid-column: 4 / 5;
+    background-color: #33b679;
+}
+
+.IETodoButton {
+    grid-column: 3 / 4;
+    background-color: #f59f00;
+}
+
+.IEDeleteButton {
+    grid-column: 2 / 3;
+    background-color: #d60000;
+}

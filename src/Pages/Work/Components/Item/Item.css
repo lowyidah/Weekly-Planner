@@ -2,11 +2,11 @@
     display: grid;
     grid-template-columns: 20px 1fr 20px;
     opacity: 100%;
-    min-height: 6.7rem;
+    min-height: 6.1rem;
     padding-left: 5%;
     padding-right: 5%;
-    padding-top: 5%;
-    padding-bottom: 5%;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
 }
 
 .itemDescription {

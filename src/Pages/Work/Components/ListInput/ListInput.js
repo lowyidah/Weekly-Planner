@@ -10,11 +10,11 @@ const ListInput = ({ onInputChange, onButtonAdd }) => {
     return (
         <div className="bg-black-50 pv3 br3  listInput">
                 <input onChange={ (event) => {onInputChange('description', event)} } onKeyPress={onKeyPress}
-                className="pa1 inputField br2 ba bw1 b--black-70" type="tex" placeholder="Description (req)"/>
+                className="pa1 inputField br2 ba bw1 b--black-70 listInputDescription" type="tex" placeholder="Description (req)"/>
                 <input onChange={ (event) => onInputChange('hours', event) } onKeyPress={onKeyPress}
-                className="pa1 inputField br2 ba bw1 b--black-70" type="number" placeholder="Hrs (opt)"/>
+                className="pa1 inputField br2 ba bw1 b--black-70 listInputHours" type="number" placeholder="Hrs (opt)"/>
                 <input onChange={ (event) => onInputChange('mins', event) } onKeyPress={onKeyPress}
-                className="pa1 inputField br2 ba bw1 b--black-70" type="number" placeholder="Mins (opt)"/> 
+                className="pa1 inputField br2 ba bw1 b--black-70 listInputMins" type="number" placeholder="Mins (opt)"/> 
                 <div>
                     <span className="f6 grow br3 pa2 no-underline dib white bg-black button"
                     onClick={() => onButtonAdd('items')}>Add [ To Do ] </span>

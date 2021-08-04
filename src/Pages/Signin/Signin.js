@@ -1,4 +1,7 @@
 import React, { useEffect } from 'react';
+import Footer from '../../Components/Footer/Footer.js';
+import './Signin.css';
+
 
 const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
     useEffect(() => {
@@ -49,32 +52,38 @@ const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
     }
 
     return (
-        <main className="pa4 black-80">
-            <div className="measure center">
-                <fieldset id="sign_up" className="ba b--transparent ph0 mh0">
-                    <legend className="f4 fw6 ph0 mh0">Sign In</legend>
-                    <div className="mt3">
-                        <label className="db fw6 lh-copy f6" htmlFor="email-address">Email</label>
-                        <input className="pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                        type="email" name="email-address"  id="email-address" onChange={onEmailChange}
-                        onKeyPress={onKeyPress}/>
-                    </div>
-                    <div className="mv3">
-                        <label className="db fw6 lh-copy f6" htmlFor="password">Password</label>
-                        <input className="b pa2 input-reset ba bg-transparent hover-bg-black hover-white w-100" 
-                        type="password" name="password" id="password" onChange={onPasswordChange}
-                        onKeyPress={onKeyPress}/>
-                    </div>
-                </fieldset>
-                <div className="">
-                    <input className="b ph3 pv2 input-reset ba b--black bg-transparent grow pointer f6 dib" 
-                    onClick={onButtonSignin} type="submit" value="Sign in"/>
+        <div className='signinPage'>
+            <div className='signinTitle'>
+                <img src='to-do-list.png' alt='' className='logo mr2'/>
+                <span className='f2 fw5'>{' Weekly Planner'}</span>
+            </div>
+            
+            <div className="br3 ba b--black-10 pa4 shadow-3 center signinBox">
+                <legend className="f3 fw6 ph0 mh0 center">Sign In</legend>
+
+                <div className="mt4">
+                    <label className="db fw6 f6 pb2" htmlFor="email-address">Email</label>
+                    <input className="pa2 input-reset ba b--mid-gray bg-transparent hover-bg-black-70 hover-white w-100 signinInputField" 
+                    type="email" name="email-address"  id="email-address" onChange={onEmailChange}
+                    onKeyPress={onKeyPress}/>
                 </div>
-                <div className="lh-copy mt3 button">
-                    <span onClick={() => changeRoute('/register')} className="f6 link dim black db">Register</span>
+                <div className="mt3 mb4">
+                    <label className="db fw6 f6 pb2" htmlFor="password">Password</label>
+                    <input className="b pa2 input-reset ba b--mid-gray bg-transparent hover-bg-black-70 hover-white w-100 signinInputField" 
+                    type="password" name="password" id="password" onChange={onPasswordChange}
+                    onKeyPress={onKeyPress}/>
                 </div>
-            </div> 
-        </main>
+
+                <div className='center'> 
+                    <div className="b ph3 pv2 ba b--black bg-transparent button f6 hover-bg-black-20" 
+                    onClick={onButtonSignin} type="submit">Sign In</div>
+                </div>
+                <div className='center'>
+                    <div className="mt2 button f6 black underline" onClick={() => changeRoute('/register')}>Register</div>
+                </div>
+            </div>
+            <Footer/>
+        </div>
     );
 }
 

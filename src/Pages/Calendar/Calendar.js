@@ -1,27 +1,122 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import Navigation from '../../Components/Navigation/Navigation.js';
+import Footer from '../../Components/Footer/Footer.js';
 import './Calendar.css';
 import Calendargrid from './Components/Calendargrid/Calendargrid.js';
 import Gcal from './Components/Gcal/Gcal.js';
 import Itemlist from './Components/Itemlist/Itemlist.js';
 import Popup from './Components/Popup/Popup.js';
+import ItemEditor from '../../Components/ItemEditor/ItemEditor.js';
 
 const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
+  console.log('run');
 
     useEffect(() => {
         reloadUser();
     }, [reloadUser]);
     
+    const emptyInput = {
+      id: '', 
+      position: '',
+      description: '',
+      hours: '',
+      mins: '',
+      details: '',
+      due: ''
+    };
+
+    const [popup, setPopup] = useState({
+      appear: false,
+      id: '',
+      type: ''
+    });
+
+    const [input, setInput] = useState(Object.assign({}, emptyInput));
     const [gcalEvents, setGcalEvents] = useState([]);
     const [items, setItems] = useState([]);
-    const [scheduledItems, setScheduledItems] = useState([]);
-    const [hasSetScheduledItems, setHasSetScheduledItems] = useState(false);
-    const [unscheduledDoingItems, setUnscheduledDoingItems] = useState([]);
+    const [doingItems, setDoingItems] = useState([]);
+    const [calendarItems, setCalendarItems] = useState([]);
+    const [hasSetCalendarItems, setHasSetCalendarItems] = useState(false);
     const [events, setEvents] = useState([]);
     let calendarRef = React.createRef();
 
-    const loadScheduledItems = (phase) => {
-      fetch('http://localhost:3000/loadscheduleditems', {
+    const onInputChange = (inputType, event) => {
+      let newInput = Object.assign({}, input);
+      if(inputType === 'description'){
+        newInput.description = event.target.value;
+      }
+      else if(inputType === "hours"){
+        newInput.hours = event.target.value;
+        if(newInput.hours === '') {
+          newInput.hours = '';
+        }
+      }
+      else if(inputType === "mins"){
+        newInput.mins = event.target.value;
+        if(newInput.mins === '') {
+          newInput.mins = '';
+        }
+      }
+      else if(inputType === "details"){
+        newInput.details = event.target.value;
+      }
+      else if (inputType === 'datetime') {
+        console.log(event.target.value)
+        newInput.due = (new Date(event.target.value)).toISOString();
+      }
+      setInput(newInput);
+    }
+
+    const closePopup = () => {
+      let newPopup = popup;
+      newPopup.appear = false;
+      setPopup(newPopup);
+    }
+    
+    const onButtonEdit = (id, type) => {
+      let newPopup = popup;
+      newPopup.appear = true;
+      newPopup.id = id;
+      newPopup.type = type;
+      setPopup(newPopup);
+      let newInput;
+      if(type === 'todo') {
+        newInput = Object.assign({}, items.filter(item => item.id === id)[0]);
+      }
+      else if(type === 'doing') {
+        newInput = Object.assign({}, doingItems.filter(item => item.id === id)[0]);
+      }
+      setInput(newInput);
+    }  
+
+    const onButtonSaveChange = () => {
+
+      let newItem = Object.assign({}, input);
+  
+      fetch('http://localhost:3000/edititem', {
+        method: 'put',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          editedItem: newItem
+        })
+      })
+      .then(() => {
+        loadItems();
+      })
+      .catch(err => console.log('Error saving edit:', err));
+  
+      setInput(Object.assign({}, emptyInput));
+      closePopup();
+    }
+
+    const onButtonCancelChange = () => {
+      setInput(Object.assign({}, emptyInput));
+      closePopup();
+    }
+
+
+    const loadCalendarItems = useCallback((phase) => {
+      fetch('http://localhost:3000/loadcalendaritems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -29,14 +124,15 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
           })
         })
       .then(response => response.json())
-      .then(scheduledItems => {
-        setScheduledItems(scheduledItems.filter(scheduledItem => scheduledItem.starttime !== ''));
-        setHasSetScheduledItems(phase);
+      .then(calendarItems => {
+        setCalendarItems(calendarItems.filter(scheduledItem => scheduledItem.starttime !== ''));
+        setHasSetCalendarItems(phase);
       })
       .catch(err => console.log('Error loading scheduled items:', err));
-    }
+    }, [user.id])
 
     const loadItems = useCallback(() => {
+        loadCalendarItems('initial', user.id);
         fetch('http://localhost:3000/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
@@ -49,8 +145,6 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(items => setItems(items))
         .catch(err => console.log('Error loading items:', err));
 
-        loadScheduledItems('initial', user.id);
-
         fetch('http://localhost:3000/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
@@ -60,11 +154,9 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
           })
         })
         .then(response => response.json())
-        .then(doing => {
-          setUnscheduledDoingItems(doing.filter(doingItem => doingItem.starttime === ''));
-        })
-        .catch(err => console.log('Error loading doing items:', err));
-    }, [user.id]);
+        .then(items => setDoingItems(items))
+        .catch(err => console.log('Error loading items:', err));
+    }, [user.id, loadCalendarItems]);
 
     const removeItemFromCalendar = (itemId) => {
       const calendarApi = calendarRef.current.getApi();
@@ -73,8 +165,26 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       }
     }
 
-    const finishedItem = (itemId) => {
-      fetch('http://localhost:3000/transferItem', {
+    const finishedItem = (id) => {
+      fetch('http://localhost:3000/transfercalendaritem', {
+          method: 'post',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+              id: id,
+              list: 'doneitems'
+          })
+      })
+      .then(loadItems)
+      .catch(err => console.log('Error transfering to doneitems:', err));
+      calendarRef.current.getApi().getEventById(id).setProp('backgroundColor', '#33b679');
+      calendarRef.current.getApi().getEventById(id).setProp('borderColor', '#33b679');
+      calendarRef.current.getApi().getEventById(id).setProp('durationEditable', false);
+      calendarRef.current.getApi().getEventById(id).setProp('startEditable', false);
+      console.log('calendarRef: ', calendarRef)
+    }
+
+    const finishedBatchItem = (itemId) => {
+      fetch('http://localhost:3000/transferitem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -82,27 +192,36 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
               listTo: 'doneitems'
           })
       })
+      .then(response => response.json())
+      .then(ids => {
+        console.log('ids: ', ids)
+        ids.forEach(idObj => {
+          console.log('calendarRef: ', calendarRef)
+          calendarRef.current.getApi().getEventById(idObj.id).setProp('backgroundColor', '#33b679');
+          calendarRef.current.getApi().getEventById(idObj.id).setProp('borderColor', '#33b679');
+          calendarRef.current.getApi().getEventById(idObj.id).setProp('durationEditable', false);
+          calendarRef.current.getApi().getEventById(idObj.id).setProp('startEditable', false);
+        })
+      })
       .then(loadItems)
+      .then(closePopup)
       .catch(err => console.log('Error transfering to doneitems:', err));
-      calendarRef.current.getApi().getEventById(itemId).setProp('backgroundColor', '#33b679');
-      calendarRef.current.getApi().getEventById(itemId).setProp('borderColor', '#33b679');
-      calendarRef.current.getApi().getEventById(itemId).setProp('durationEditable', false);
-      calendarRef.current.getApi().getEventById(itemId).setProp('startEditable', false);
+      console.log('calendarRef: ', calendarRef)
     }
 
-    const undoItem = (itemId) => {
-        removeItemFromCalendar(itemId);
-        fetch('http://localhost:3000/transferitem', {
-            method: 'post',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({
-                id: itemId,
-                listTo: 'items'
-            })
+    const todoItem = (id) => {
+      fetch('http://localhost:3000/transferitem', {
+        method: 'post',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          id: id,
+          listTo: 'items'
         })
-        .then(loadItems)
-        .catch(err => console.log('Error transfering to items:', err));
+      })
+      .then(() => loadItems())
+      .catch(err => console.log('Error transfering item to todo list:', err));
     }
+
 
     const deleteItem = (itemId) => {
         removeItemFromCalendar(itemId);
@@ -118,27 +237,24 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const doItem = (itemId) => {
-      fetch('http://localhost:3000/transferitem', {
+      fetch('http://localhost:3000/transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
               id: itemId,
-              listTo: 'doingitems'
+              list: 'doingitems'
           })
       })
       .then(loadItems)
       .catch(err => console.log('Error transfering item to doing list:', err));
-      removeItemFromCalendar(itemId);
     }
 
     const unscheduleItem = (itemId) => {
-      fetch('http://localhost:3000/transferitem', {
+      fetch('http://localhost:3000/deletecalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
-            id: itemId,
-            startTime: '',
-            endTime: ''
+            id: itemId
           })
       })
       .then(loadItems)
@@ -172,26 +288,25 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       } 
   }
 
-    const [popup, setPopup] = useState({
+    const [calPopup, setCalPopup] = useState({
       appear: false,
       details: '',
       eventId: '',
-      list: '',
-      dueLocal: ''
+      list: ''
     })
 
-    const openPopup = (eventId) => {
+    const openCalPopup = (eventId) => {
       if (calendarRef.current.getApi().getEventById(eventId) && calendarRef.current.getApi().getEventById(eventId).extendedProps.source === 'gcal') {
-        let newPopup = Object.assign({}, popup);
-        newPopup.appear = true;
-        newPopup.details = calendarRef.current.getApi().getEventById(eventId).extendedProps.details;
-        newPopup.eventId = eventId;
-        newPopup.list = calendarRef.current.getApi().getEventById(eventId).extendedProps.attendance;
-        setPopup(newPopup);
+        let newCalPopup = Object.assign({}, calPopup);
+        newCalPopup.appear = true;
+        newCalPopup.details = calendarRef.current.getApi().getEventById(eventId).extendedProps.details;
+        newCalPopup.eventId = eventId;
+        newCalPopup.list = calendarRef.current.getApi().getEventById(eventId).extendedProps.attendance;
+        setCalPopup(newCalPopup);
       }
       else {
         let item;
-        fetch('http://localhost:3000/loaditem', {
+        fetch('http://localhost:3000/loadcalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -201,13 +316,12 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(response => response.json())
         .then(itemReturned => item = itemReturned)
         .then(() => {
-          let newPopup = Object.assign({}, popup);
-          newPopup.appear = true;
-          newPopup.details = item.details;
-          newPopup.eventId = eventId;
-          newPopup.list = item.list;
-          newPopup.dueLocal = generateDate(item.due);
-          setPopup(newPopup);
+          let newCalPopup = Object.assign({}, popup);
+          newCalPopup.appear = true;
+          newCalPopup.details = item.details;
+          newCalPopup.eventId = eventId;
+          newCalPopup.list = item.list;
+          setCalPopup(newCalPopup);
         })
         .catch(err => console.log('Error loading item'));
       }
@@ -217,85 +331,98 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       event.stopPropagation();
     }
 
-    const closePopup = () => {
-      let newPopup = Object.assign({}, popup);
-      newPopup.appear = false;
-      setPopup(newPopup);
+    const closeCalPopup = () => {
+      let newCalPopup = Object.assign({}, calPopup);
+      newCalPopup.appear = false;
+      setCalPopup(newCalPopup);
     }
 
     // concatenating doingEvents to gcalEvents 
     useEffect(() => { 
-      const scheduledEvents = scheduledItems.map(scheduledItem => {
-          let backgroundColor, borderColor;
-          if ((new Date(scheduledItem.endtime) - Date.now() < 0) && (scheduledItem.list === 'doingitems')) {
-              backgroundColor = '#d60000';
-              borderColor = '#d60000';
-          }
-          else if (scheduledItem.list === 'doneitems'){
-              backgroundColor = '#33b679';
-              borderColor = '#33b679';
-          }
-          else if (scheduledItem.category === 'work') {
-              backgroundColor = '#f5511d';
-              borderColor = '#f5511d';
-          }
-          else if (scheduledItem.category === 'errand') {
-              backgroundColor = '#f6c026';
-              borderColor = '#f6c026';
-          }
+      const scheduledEvents = calendarItems.map(scheduledItem => {
+        let backgroundColor, borderColor;
+        if ((new Date(scheduledItem.endtime) - Date.now() < 0) && (scheduledItem.list === 'doingitems')) {
+            backgroundColor = '#d60000';
+            borderColor = '#d60000';
+        }
+        else if (scheduledItem.list === 'doneitems'){
+            backgroundColor = '#33b679';
+            borderColor = '#33b679';
+        }
+        else if (scheduledItem.category === 'work') {
+            backgroundColor = '#f5511d';
+            borderColor = '#f5511d';
+        }
+        else if (scheduledItem.category === 'errand') {
+            backgroundColor = '#f6c026';
+            borderColor = '#f6c026';
+        }
 
-          let durationEditable = true, startEditable = true;
-          if (scheduledItem.list === 'doneitems') {
-              durationEditable = false;
-              startEditable = false;
-          }
+        let durationEditable = true, startEditable = true;
+        if (scheduledItem.list === 'doneitems') {
+            durationEditable = false;
+            startEditable = false;
+        }
 
-          return {
-              title: scheduledItem.description,
-              details: scheduledItem.details,
-              start: scheduledItem.starttime,
-              end: scheduledItem.endtime,
-              id: scheduledItem.id,
-              backgroundColor: backgroundColor,
-              borderColor: borderColor,
-              source: 'db',
-              category: scheduledItem.category,
-              durationEditable: durationEditable,
-              startEditable: startEditable
-              //creator: 
-          }
+        return {
+            title: scheduledItem.description,
+            details: scheduledItem.details,
+            start: scheduledItem.starttime,
+            end: scheduledItem.endtime,
+            id: scheduledItem.id,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            source: 'db',
+            category: scheduledItem.category,
+            durationEditable: durationEditable,
+            startEditable: startEditable
+            //creator: 
+        }
       }); 
       setEvents([].concat(gcalEvents, scheduledEvents));
       calendarRef.current.getApi().getEvents().forEach(event => {
           calendarRef.current.getApi().getEventById(event.id).remove();
       })
-  }, [gcalEvents, hasSetScheduledItems, scheduledItems])
+  }, [gcalEvents, hasSetCalendarItems, calendarItems])
 
     return (
-        <div>
-            <Navigation changeRoute={changeRoute} signOut={signOut} username={user.username} currentPage={'calendar'}/>
-            <Gcal setGcalEvents={setGcalEvents} loadScheduledItems={loadScheduledItems} 
-            scheduledItems={scheduledItems}/>
-            <div className='calendar-wrapper'>
-                <Calendargrid ref={calendarRef} gcalEvents={gcalEvents} loadItems={loadItems} events={events}
-                hasSetScheduledItems={hasSetScheduledItems} scheduledItems={scheduledItems} openPopup={openPopup}/>
-                <div className='w-20'>
-                    {
-                      popup.appear ? 
-                      <Popup list={popup.list} details={popup.details} eventId={popup.eventId} insulateClick={insulateClick} closePopup={closePopup}
-                        finishedItem={finishedItem} undoItem={undoItem} deleteItem={deleteItem} doItem={doItem}
-                        unscheduleItem={unscheduleItem} dueLocal={popup.dueLocal}
-                        /> 
-                      : null
-                    }
-                    <Itemlist generateDate={generateDate}
-                    listName={'Todo'} items={items} user={user} loadItems={loadItems} openPopup={openPopup}/>
-                    <Itemlist listName={'Unscheduled Doing'} generateDate={generateDate}
-                    items={unscheduledDoingItems} user={user} loadItems={loadItems} openPopup={openPopup}/>
-                </div>
+        <div className='calendarPageWrapper'>
+          <Navigation changeRoute={changeRoute} signOut={signOut} username={user.username} currentPage={'calendar'}/>
+          {
+            calPopup.appear ? 
+            <Popup list={calPopup.list} details={calPopup.details} eventId={calPopup.eventId} insulateClick={insulateClick} 
+            closePopup={closeCalPopup} finishedItem={finishedItem}
+            doItem={doItem} unscheduleItem={unscheduleItem} finishedBatchItem={finishedBatchItem}
+              /> 
+            : null
+          }
+          {
+            popup.appear ? 
+            <ItemEditor id={popup.id} type={popup.type} onInputChange={onInputChange} 
+            onButtonSaveChange={onButtonSaveChange} onButtonCancelChange={onButtonCancelChange} 
+            insulateClick={insulateClick} item={input} finishedBatchItem={finishedBatchItem}
+            todoItem={todoItem} deleteItem={deleteItem}
+            /> 
+            : null
+          }
+          <div className='calendarBodyWrapper'>
+            <div className='GcalWrapper'>
+              <Gcal setGcalEvents={setGcalEvents} loadCalendarItems={loadCalendarItems} 
+              calendarItems={calendarItems}/>
             </div>
+            <div className='CalendargridWrapper'>
+              <Calendargrid ref={calendarRef} loadItems={loadItems} events={events}
+              openPopup={openCalPopup}/>
+            </div>
+            <div className='ItemListsWrapper'>
+              <Itemlist generateDate={generateDate}
+              listType={'todo'} items={items} user={user} loadItems={loadItems} openPopup={onButtonEdit}/>
+              <Itemlist listType={'doing'} generateDate={generateDate}
+              items={doingItems} user={user} loadItems={loadItems} openPopup={onButtonEdit}/>
+            </div>
+          </div>
+          <Footer/>
         </div>
-
     );
 }
 

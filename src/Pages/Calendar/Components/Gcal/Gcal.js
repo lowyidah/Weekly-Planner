@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import './Gcal.css';
 
-const Gcal = ({ setGcalEvents, scheduledItems, loadScheduledItems }) => {
+const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
 
     const [email, setEmail] = useState('');
     const [accessToken, setAccessToken] = useState('');
 
     const saveToGcal = () => {
-        const gcalEvents = scheduledItems.map(scheduledItem => {
+        const gcalEvents = calendarItems.map(scheduledItem => {
             let colorId;
             if ((new Date(scheduledItem.endtime) - Date.now() < 0) && (scheduledItem.list === 'doingitems')) {
                 colorId = '11';
@@ -106,7 +106,7 @@ const Gcal = ({ setGcalEvents, scheduledItems, loadScheduledItems }) => {
                 accessToken: accessToken
             })
         })
-        .then(() => loadScheduledItems(Date.now()))
+        .then(() => loadCalendarItems(Date.now()))
         .catch(err => console.log('Error updating items:', err));
     }
 
@@ -128,8 +128,23 @@ const Gcal = ({ setGcalEvents, scheduledItems, loadScheduledItems }) => {
 
 
     return (
-        <div className='mh3 mv1 ph3 pv1 gcal-wrapper'>
-            <div className='w-50'>
+        <div className='gcalWrapper bg-black-50 br3 white'>
+            <div className='signinLabel'>
+                {
+                    email === '' ? 
+                    'You are not signed into google calendar' :
+                    ('You are signed into google calendar as ' + email)
+                }
+            </div>
+            <div>
+                <span className="f6 grow br2 syncGcalButtons dib white bg-black button" 
+                onClick={onButtonSync}>Sync from Google Calendar</span>
+            </div>
+            <div>
+                <span className="f6 grow br2 syncGcalButtons dib white bg-black button" 
+                onClick={saveToGcal}>Sync to Google Calendar</span>
+            </div>
+            <div className='googleLogin'>
                 {
                     email === '' ?
                     <GoogleLogin
@@ -152,19 +167,6 @@ const Gcal = ({ setGcalEvents, scheduledItems, loadScheduledItems }) => {
                     scope='https://www.googleapis.com/auth/calendar'
                     />
                 }
-            </div>
-            <div className='w-50'>
-                <h4>
-                    {
-                        email === '' ? 
-                        'You are not signed into google calendar' :
-                        ('You are signed into google calendar as ' + email)
-                    }
-                </h4>
-                <span className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black button" 
-                onClick={onButtonSync}>Sync changes from gcal</span>
-                <span className="f6 grow no-underline br-pill ph3 pv2 mb2 dib white bg-black button" 
-                onClick={saveToGcal}>Save to gcal</span>
             </div>
         </div>
     );
