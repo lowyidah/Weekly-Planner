@@ -45,7 +45,7 @@ const App = () => {
     }, [history]);
 
     const reloadUser = useCallback(() => {
-        fetch('http://localhost:3000/profile', {
+        fetch('https://planner-server-1515.herokuapp.com/profile', {
             method: 'post', 
             credentials: 'include'
         })
