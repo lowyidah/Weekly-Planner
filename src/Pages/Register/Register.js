@@ -25,7 +25,7 @@ const Register = ({ changeRoute, setUser, reloadUser }) => {
     }
 
     const onButtonRegister = () => {
-        fetch('http://localhost:3000/register', {
+        fetch(proccess.env.SERVER_URL + 'register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

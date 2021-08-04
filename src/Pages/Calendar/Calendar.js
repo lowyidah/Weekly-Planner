@@ -93,7 +93,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
       let newItem = Object.assign({}, input);
   
-      fetch('http://localhost:3000/edititem', {
+      fetch(proccess.env.SERVER_URL + 'edititem', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -116,7 +116,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
 
     const loadCalendarItems = useCallback((phase) => {
-      fetch('http://localhost:3000/loadcalendaritems', {
+      fetch(proccess.env.SERVER_URL + 'loadcalendaritems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -133,7 +133,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
     const loadItems = useCallback(() => {
         loadCalendarItems('initial', user.id);
-        fetch('http://localhost:3000/loaditems', {
+        fetch(proccess.env.SERVER_URL + 'loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -145,7 +145,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(items => setItems(items))
         .catch(err => console.log('Error loading items:', err));
 
-        fetch('http://localhost:3000/loaditems', {
+        fetch(proccess.env.SERVER_URL + 'loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -166,7 +166,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedItem = (id) => {
-      fetch('http://localhost:3000/transfercalendaritem', {
+      fetch(proccess.env.SERVER_URL + 'transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -184,7 +184,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedBatchItem = (itemId) => {
-      fetch('http://localhost:3000/transferitem', {
+      fetch(proccess.env.SERVER_URL + 'transferitem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -210,7 +210,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const todoItem = (id) => {
-      fetch('http://localhost:3000/transferitem', {
+      fetch(proccess.env.SERVER_URL + 'transferitem', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -225,7 +225,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
     const deleteItem = (itemId) => {
         removeItemFromCalendar(itemId);
-        fetch('http://localhost:3000/deleteitem', {
+        fetch(proccess.env.SERVER_URL + 'deleteitem', {
             method: 'delete',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -237,7 +237,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const doItem = (itemId) => {
-      fetch('http://localhost:3000/transfercalendaritem', {
+      fetch(proccess.env.SERVER_URL + 'transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -250,7 +250,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const unscheduleItem = (itemId) => {
-      fetch('http://localhost:3000/deletecalendaritem', {
+      fetch(proccess.env.SERVER_URL + 'deletecalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -306,7 +306,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       }
       else {
         let item;
-        fetch('http://localhost:3000/loadcalendaritem', {
+        fetch(proccess.env.SERVER_URL + 'loadcalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

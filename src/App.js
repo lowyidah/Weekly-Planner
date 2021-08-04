@@ -73,7 +73,7 @@ const App = () => {
     
 
     const signOutApp = () => {
-        fetch('http://localhost:3000/signout', {
+        fetch(proccess.env.SERVER_URL + 'signout', {
             method: 'post',
             credentials: 'include'
         })

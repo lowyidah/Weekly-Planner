@@ -48,7 +48,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
 
   const loadItems = useCallback(() => {
-    fetch('http://localhost:3000/loaditems', {
+    fetch(proccess.env.SERVER_URL + 'loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -63,7 +63,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }, [user.id, category]);
 
   const loadDoingItems = useCallback(() => {
-    fetch('http://localhost:3000/loaditems', {
+    fetch(proccess.env.SERVER_URL + 'loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -78,7 +78,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }, [user.id, category]);
 
   const loadDoneItems = useCallback(() => {
-    fetch('http://localhost:3000/loaditems', {
+    fetch(proccess.env.SERVER_URL + 'loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -130,7 +130,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
       return;
     }
 
-    fetch('http://localhost:3000/additem', {
+    fetch(proccess.env.SERVER_URL + 'additem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -167,7 +167,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
     let newItem = Object.assign({}, input);
 
-    fetch('http://localhost:3000/edititem', {
+    fetch(proccess.env.SERVER_URL + 'edititem', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -201,7 +201,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonDelete = (id, type) => {
-    fetch('http://localhost:3000/deleteitem', {
+    fetch(proccess.env.SERVER_URL + 'deleteitem', {
       method: 'delete',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -223,7 +223,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonTransfer = (id, listTo) => {
-    fetch('http://localhost:3000/transferitem', {
+    fetch(proccess.env.SERVER_URL + 'transferitem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -236,7 +236,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonReorder = (id, direction, list) => {
-    fetch('http://localhost:3000/reorderitems', {
+    fetch(proccess.env.SERVER_URL + 'reorderitems', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
