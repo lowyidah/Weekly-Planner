@@ -5,7 +5,6 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 
-console.log("process.env: ", process.env.TEST);
 
 ReactDOM.render(
   <React.StrictMode>

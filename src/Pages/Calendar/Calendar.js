@@ -93,7 +93,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
       let newItem = Object.assign({}, input);
   
-      fetch(process.env.SERVER_URL + 'edititem', {
+      fetch('https://planner-server-1515.herokuapp.com/edititem', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -116,7 +116,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
 
     const loadCalendarItems = useCallback((phase) => {
-      fetch(process.env.SERVER_URL + 'loadcalendaritems', {
+      fetch('https://planner-server-1515.herokuapp.com/loadcalendaritems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -133,7 +133,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
     const loadItems = useCallback(() => {
         loadCalendarItems('initial', user.id);
-        fetch(process.env.SERVER_URL + 'loaditems', {
+        fetch('https://planner-server-1515.herokuapp.com/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -145,7 +145,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(items => setItems(items))
         .catch(err => console.log('Error loading items:', err));
 
-        fetch(process.env.SERVER_URL + 'loaditems', {
+        fetch('https://planner-server-1515.herokuapp.com/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -166,7 +166,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedItem = (id) => {
-      fetch(process.env.SERVER_URL + 'transfercalendaritem', {
+      fetch('https://planner-server-1515.herokuapp.com/transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -184,7 +184,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedBatchItem = (itemId) => {
-      fetch(process.env.SERVER_URL + 'transferitem', {
+      fetch('https://planner-server-1515.herokuapp.com/transferitem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -210,7 +210,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const todoItem = (id) => {
-      fetch(process.env.SERVER_URL + 'transferitem', {
+      fetch('https://planner-server-1515.herokuapp.com/transferitem', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -225,7 +225,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
     const deleteItem = (itemId) => {
         removeItemFromCalendar(itemId);
-        fetch(process.env.SERVER_URL + 'deleteitem', {
+        fetch('https://planner-server-1515.herokuapp.com/deleteitem', {
             method: 'delete',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -237,7 +237,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const doItem = (itemId) => {
-      fetch(process.env.SERVER_URL + 'transfercalendaritem', {
+      fetch('https://planner-server-1515.herokuapp.com/transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -250,7 +250,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const unscheduleItem = (itemId) => {
-      fetch(process.env.SERVER_URL + 'deletecalendaritem', {
+      fetch('https://planner-server-1515.herokuapp.com/deletecalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -306,7 +306,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       }
       else {
         let item;
-        fetch(process.env.SERVER_URL + 'loadcalendaritem', {
+        fetch('https://planner-server-1515.herokuapp.com/loadcalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

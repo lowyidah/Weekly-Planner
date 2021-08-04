@@ -73,7 +73,7 @@ const App = () => {
     
 
     const signOutApp = () => {
-        fetch(process.env.SERVER_URL + 'signout', {
+        fetch('https://planner-server-1515.herokuapp.com/signout', {
             method: 'post',
             credentials: 'include'
         })

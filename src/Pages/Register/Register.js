@@ -25,7 +25,7 @@ const Register = ({ changeRoute, setUser, reloadUser }) => {
     }
 
     const onButtonRegister = () => {
-        fetch('https://planner-server-1515.herokuapp.com/' + 'register', {
+        fetch('https://planner-server-1515.herokuapp.com/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

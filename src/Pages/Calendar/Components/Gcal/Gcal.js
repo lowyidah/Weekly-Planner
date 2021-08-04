@@ -42,7 +42,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
             }
         })
 
-        fetch(process.env.SERVER_URL + 'savetogcal', {
+        fetch('https://planner-server-1515.herokuapp.com/savetogcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -57,7 +57,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
         setAccessToken(response.accessToken);
 
         setEmail(response.profileObj.email);
-        fetch(process.env.SERVER_URL + 'signincalendar', {
+        fetch('https://planner-server-1515.herokuapp.com/signincalendar', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -99,7 +99,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
     }
 
     const onButtonSync = () => {
-        fetch(process.env.SERVER_URL + 'syncfromgcal', {
+        fetch('https://planner-server-1515.herokuapp.com/syncfromgcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -117,7 +117,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
 
     // const responseGoogle1 = (response) => {
     //     console.log(response)
-    //     fetch(process.env.SERVER_URL + 'signincalendar', {
+    //     fetch('https://planner-server-1515.herokuapp.com/signincalendar', {
     //         method: 'post',
     //         headers: {'Content-Type': 'application/json'},
     //         body: JSON.stringify({

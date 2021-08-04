@@ -21,7 +21,7 @@ const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
 
     const onButtonSignin = () => {
 
-        fetch('https://planner-server-1515.herokuapp.com/' + 'signin', {
+        fetch('https://planner-server-1515.herokuapp.com/signin', {
             method: 'post',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

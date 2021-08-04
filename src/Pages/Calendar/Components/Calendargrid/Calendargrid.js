@@ -66,7 +66,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
         }
 
         if (action === 'receive') {
-            await fetch(process.env.SERVER_URL + 'scheduleitem', {
+            await fetch('https://planner-server-1515.herokuapp.com/scheduleitem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -88,7 +88,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
 
         else if (action === 'manipulate') {
             id = itemId;
-            fetch(process.env.SERVER_URL + 'updatecalendaritem', {
+            fetch('https://planner-server-1515.herokuapp.com/updatecalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

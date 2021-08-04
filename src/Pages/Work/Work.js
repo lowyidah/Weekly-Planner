@@ -48,7 +48,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
 
   const loadItems = useCallback(() => {
-    fetch(process.env.SERVER_URL + 'loaditems', {
+    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -63,7 +63,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }, [user.id, category]);
 
   const loadDoingItems = useCallback(() => {
-    fetch(process.env.SERVER_URL + 'loaditems', {
+    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -78,7 +78,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }, [user.id, category]);
 
   const loadDoneItems = useCallback(() => {
-    fetch(process.env.SERVER_URL + 'loaditems', {
+    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -130,7 +130,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
       return;
     }
 
-    fetch(process.env.SERVER_URL + 'additem', {
+    fetch('https://planner-server-1515.herokuapp.com/additem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -167,7 +167,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
     let newItem = Object.assign({}, input);
 
-    fetch(process.env.SERVER_URL + 'edititem', {
+    fetch('https://planner-server-1515.herokuapp.com/edititem', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -201,7 +201,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonDelete = (id, type) => {
-    fetch(process.env.SERVER_URL + 'deleteitem', {
+    fetch('https://planner-server-1515.herokuapp.com/deleteitem', {
       method: 'delete',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -223,7 +223,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonTransfer = (id, listTo) => {
-    fetch(process.env.SERVER_URL + 'transferitem', {
+    fetch('https://planner-server-1515.herokuapp.com/transferitem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -236,7 +236,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonReorder = (id, direction, list) => {
-    fetch(process.env.SERVER_URL + 'reorderitems', {
+    fetch('https://planner-server-1515.herokuapp.com/reorderitems', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
