@@ -56,7 +56,7 @@ const App = () => {
             }
             else if (userSignedin === "You are not logged in") {
                 setUser('');
-                replaceRoute('/signin');
+                replaceRoute('/');
 
             }
             else if ((history.location.pathname === '/register' || history.location.pathname === '/signin'
@@ -78,7 +78,7 @@ const App = () => {
             credentials: 'include'
         })
         .catch(() => console.log('Unable to sign out'));
-        changeRoute('/signin');
+        changeRoute('/');
         //signOut();
     }
 
@@ -105,10 +105,6 @@ const App = () => {
                 </Route>
                 <Route path="/register">
                     <Register reloadUser={reloadUser} changeRoute={changeRoute} setUser={setUser}/>
-                </Route>
-                <Route path="/signin">
-                    <Signin reloadUser={reloadUser} replaceRoute={replaceRoute} changeRoute={changeRoute} setUser={setUser}/>
-                    {/* <SigninGoogle/> */}
                 </Route>
                 <Route path="/">
                     <Signin reloadUser={reloadUser} changeRoute={changeRoute} replaceRoute={replaceRoute} setUser={setUser}/>
