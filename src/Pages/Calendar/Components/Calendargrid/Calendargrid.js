@@ -66,7 +66,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
         }
 
         if (action === 'receive') {
-            await fetch(proccess.env.SERVER_URL + 'scheduleitem', {
+            await fetch(process.env.SERVER_URL + 'scheduleitem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -88,7 +88,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
 
         else if (action === 'manipulate') {
             id = itemId;
-            fetch(proccess.env.SERVER_URL + 'updatecalendaritem', {
+            fetch(process.env.SERVER_URL + 'updatecalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

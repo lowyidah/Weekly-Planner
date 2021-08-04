@@ -21,7 +21,7 @@ const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
 
     const onButtonSignin = () => {
 
-        fetch(proccess.env.SERVER_URL + 'signin', {
+        fetch(process.env.SERVER_URL + 'signin', {
             method: 'post',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

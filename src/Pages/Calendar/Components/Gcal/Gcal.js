@@ -42,7 +42,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
             }
         })
 
-        fetch(proccess.env.SERVER_URL + 'savetogcal', {
+        fetch(process.env.SERVER_URL + 'savetogcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -57,7 +57,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
         setAccessToken(response.accessToken);
 
         setEmail(response.profileObj.email);
-        fetch(proccess.env.SERVER_URL + 'signincalendar', {
+        fetch(process.env.SERVER_URL + 'signincalendar', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -99,7 +99,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
     }
 
     const onButtonSync = () => {
-        fetch(proccess.env.SERVER_URL + 'syncfromgcal', {
+        fetch(process.env.SERVER_URL + 'syncfromgcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -117,7 +117,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
 
     // const responseGoogle1 = (response) => {
     //     console.log(response)
-    //     fetch(proccess.env.SERVER_URL + 'signincalendar', {
+    //     fetch(process.env.SERVER_URL + 'signincalendar', {
     //         method: 'post',
     //         headers: {'Content-Type': 'application/json'},
     //         body: JSON.stringify({

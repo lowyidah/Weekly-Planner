@@ -73,7 +73,7 @@ const App = () => {
     
 
     const signOutApp = () => {
-        fetch(proccess.env.SERVER_URL + 'signout', {
+        fetch(process.env.SERVER_URL + 'signout', {
             method: 'post',
             credentials: 'include'
         })
