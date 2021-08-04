@@ -5,6 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 
+console.log("process.env.SERVER_URL: ", process.env.SERVER_URL);
+
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
