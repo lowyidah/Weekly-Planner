@@ -1,7 +1,7 @@
 
 ### This project is a website that allows users to easily plan their week. It is available at: https://planner1515.web.app
 
-#### This website is intended for use on Google Chrome (Desktop). The syncing with google calendar function is currently not published, hence each user's google email has to be added manually in the back end for the user to gain access to the syncing function.
+#### This website is intended for use on Google Chrome (Desktop). The syncing with google calendar function is currently not published, hence each user's google email has to be manually added in the back end for the user to gain access to the syncing function.
 
 ##### This is the front-end repository.
 
