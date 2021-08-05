@@ -118,7 +118,7 @@ const Item = ({ id, description, hours, mins, category, onButtonDelete,
     }
 
     return(
-        <div className="mv3 br2 itemBox" style={{backgroundColor: color}}> 
+        <div className="mv3 br2 itemBox white" style={{backgroundColor: color}}> 
             <div className="arrows">
                 <div className="button upArrow grow" 
                 onClick={() => onButtonReorder(id, 'up', list)}>&#x25B2;</div>

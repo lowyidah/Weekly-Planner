@@ -7,7 +7,6 @@ import Register from './Pages/Register/Register.js';
 import Calendar from './Pages/Calendar/Calendar.js';
 import 'tachyons';
 import { Switch, Route, useHistory } from "react-router-dom";
-// import { useGoogleLogout } from 'react-google-login';
 import Particles from 'react-particles-js';
 
 const App = ({backendUrl}) => {
@@ -24,10 +23,6 @@ const App = ({backendUrl}) => {
         }
       }
     
-    // const clientId="353820592491-bt1jlb4iuf7d8f6f3iu5prh797q08umm.apps.googleusercontent.com";
-    // const { signOut } = useGoogleLogout({
-    //     clientId
-    // })
 
     let history = useHistory();
     const [user, setUser] = useState('');
