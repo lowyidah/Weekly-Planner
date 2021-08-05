@@ -1,18 +1,8 @@
 
-This project is a website that 
+This project is a website that allows users to easily plan their week. It is intended for use on Google Chrome (Desktop). It is available at:
 
-react (Javascript), html, css 
+The front-end was built using React, HTML and CSS. It uses React hooks for state management, React Router, and the FullCalendar library. The front-end is deployed on Firebase.
 
-hooks 
+The back-end was built using Express.js and PostgreSQL with Knex.js as the query builder. It also manages session cookies for signing in purposes
+and uses the Google Calendar API. The back-end is deployed on Heroku.
 
-React front end
-express back end
-PostgreSQL with Knex.js as query builder
-
-google calendar api
-FullCalendar library
-
-react router
-cookies
-
-heroku, firebase
