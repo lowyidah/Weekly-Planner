@@ -71,7 +71,6 @@ const App = ({backendUrl}) => {
         .catch(() => console.log("Unable to retrieve user profile"));
     }, [replaceRoute, history, backendUrl]);
     
-
     const signOutApp = () => {
         fetch(backendUrl + '/signout', {
             method: 'post',
