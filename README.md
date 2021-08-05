@@ -1,5 +1,5 @@
 
-### This project is a website that allows users to easily plan their week. 
+### This project is a website that allows users to easily plan their week
 
 #### This website is intended for use on Google Chrome (Desktop). It is available at: https://planner1515.web.app
 
