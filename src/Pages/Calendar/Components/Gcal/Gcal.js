@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { GoogleLogin, GoogleLogout } from 'react-google-login';
 import './Gcal.css';
 
-const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
+const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems, backendUrl }) => {
 
     const [email, setEmail] = useState('');
     const [accessToken, setAccessToken] = useState('');
@@ -42,7 +42,7 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
             }
         })
 
-        fetch('https://planner-server-1515.herokuapp.com/savetogcal', {
+        fetch(backendUrl + '/savetogcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -53,15 +53,12 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
         .catch(err => console.log('Error saving to gcal:', err));
     }
 
-    const responseGoogle = (response) => {
-        setAccessToken(response.accessToken);
-
-        setEmail(response.profileObj.email);
-        fetch('https://planner-server-1515.herokuapp.com/signincalendar', {
+    const updateGcalItems = (accessToken) => {
+        fetch(backendUrl + '/signincalendar', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
-                accessToken: response.accessToken,
+                accessToken: accessToken,
             })
         })
         .then(response => response.json())
@@ -98,8 +95,14 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
         .catch(err => console.log('Error logging into gcal:', err));
     }
 
+    const responseGoogle = (response) => {
+        setAccessToken(response.accessToken);
+        setEmail(response.profileObj.email);
+        updateGcalItems(response.accessToken);
+    }
+
     const onButtonSync = () => {
-        fetch('https://planner-server-1515.herokuapp.com/syncfromgcal', {
+        fetch(backendUrl + '/syncfromgcal', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -107,6 +110,9 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
             })
         })
         .then(() => loadCalendarItems(Date.now()))
+        .then(() => {
+            updateGcalItems(accessToken);
+        })
         .catch(err => console.log('Error updating items:', err));
     }
 
@@ -114,17 +120,6 @@ const Gcal = ({ setGcalEvents, calendarItems, loadCalendarItems }) => {
         setGcalEvents([]);
         setEmail('');
     }
-
-    // const responseGoogle1 = (response) => {
-    //     console.log(response)
-    //     fetch('https://planner-server-1515.herokuapp.com/signincalendar', {
-    //         method: 'post',
-    //         headers: {'Content-Type': 'application/json'},
-    //         body: JSON.stringify({
-    //             code: response.code,
-    //         })
-    //     })
-    // }
 
 
     return (

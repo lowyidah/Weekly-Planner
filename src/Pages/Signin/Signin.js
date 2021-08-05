@@ -3,7 +3,7 @@ import Footer from '../../Components/Footer/Footer.js';
 import './Signin.css';
 
 
-const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
+const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute, backendUrl }) => {
     useEffect(() => {
         reloadUser();
     }, [reloadUser]);
@@ -21,7 +21,8 @@ const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
 
     const onButtonSignin = () => {
 
-        fetch('https://planner-server-1515.herokuapp.com/signin', {
+        console.log('backendUrl:', backendUrl)
+        fetch(backendUrl + '/signin', {
             method: 'post',
             credentials: 'include',
             headers: {
@@ -57,7 +58,7 @@ const Signin = ({ changeRoute, setUser, reloadUser, replaceRoute }) => {
         <div className='signinPage'>
             <div className='signinTitle'>
                 <img src='to-do-list.png' alt='' className='logo mr2'/>
-                <span className='f2 fw5'>{' Weekly Plannerrr'}</span>
+                <span className='f2 fw5'>{' Weekly Planner'}</span>
             </div>
             
             <div className="br3 ba b--black-10 pa4 shadow-3 center signinBox">

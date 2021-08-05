@@ -10,7 +10,7 @@ import { Switch, Route, useHistory } from "react-router-dom";
 // import { useGoogleLogout } from 'react-google-login';
 import Particles from 'react-particles-js';
 
-const App = () => {
+const App = ({backendUrl}) => {
 
     const particlesOptions = {
         particles: {
@@ -45,7 +45,7 @@ const App = () => {
     }, [history]);
 
     const reloadUser = useCallback(() => {
-        fetch('https://planner-server-1515.herokuapp.com/profile', {
+        fetch(backendUrl + '/profile', {
             method: 'post', 
             credentials: 'include'
         })
@@ -69,11 +69,11 @@ const App = () => {
             }
         })
         .catch(() => console.log("Unable to retrieve user profile"));
-    }, [replaceRoute, history]);
+    }, [replaceRoute, history, backendUrl]);
     
 
     const signOutApp = () => {
-        fetch('https://planner-server-1515.herokuapp.com/signout', {
+        fetch(backendUrl + '/signout', {
             method: 'post',
             credentials: 'include'
         })
@@ -92,26 +92,26 @@ const App = () => {
                     <HowToUse reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
                 </Route>
                 <Route path="/summary">
-                    <Work  pageType={'summary'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
+                    <Work backendUrl={backendUrl} pageType={'summary'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
                 </Route>
                 <Route path="/errands">
-                    <Work pageType={'errands'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
+                    <Work backendUrl={backendUrl} pageType={'errands'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
                 </Route>
                 <Route path="/work">
-                    <Work pageType={'work'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
+                    <Work backendUrl={backendUrl} pageType={'work'} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
                 </Route>
                 <Route path="/calendar">
-                    <Calendar reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
+                    <Calendar backendUrl={backendUrl} reloadUser={reloadUser} changeRoute={changeRoute} user={user} signOut={signOutApp}/>
                 </Route>
                 <Route path="/register">
-                    <Register reloadUser={reloadUser} changeRoute={changeRoute} setUser={setUser}/>
+                    <Register backendUrl={backendUrl} reloadUser={reloadUser} changeRoute={changeRoute} setUser={setUser}/>
                 </Route>
                 <Route path="/signin">
-                    <Signin reloadUser={reloadUser} replaceRoute={replaceRoute} changeRoute={changeRoute} setUser={setUser}/>
+                    <Signin backendUrl={backendUrl} reloadUser={reloadUser} replaceRoute={replaceRoute} changeRoute={changeRoute} setUser={setUser}/>
                     {/* <SigninGoogle/> */}
                 </Route>
                 <Route path="/">
-                    <Signin reloadUser={reloadUser} changeRoute={changeRoute} replaceRoute={replaceRoute} setUser={setUser}/>
+                    <Signin backendUrl={backendUrl} reloadUser={reloadUser} changeRoute={changeRoute} replaceRoute={replaceRoute} setUser={setUser}/>
                 </Route>
             </Switch>
         </div>

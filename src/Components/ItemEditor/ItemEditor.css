@@ -56,6 +56,9 @@ textarea {
 .description, .details{
     grid-column: 1 / 6;
     margin: 0 0 1rem 0;
+}
+
+.description {
     height: 1.2rem;
 }
 

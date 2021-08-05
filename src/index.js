@@ -5,11 +5,18 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
 
+let backendUrl;
+if (process.env.NODE_ENV === 'production') {
+  backendUrl = 'https://planner-server-1515.herokuapp.com';
+}
+else {
+  backendUrl = 'http://localhost:3000';
+}
 
 ReactDOM.render(
   <React.StrictMode>
     <BrowserRouter>
-      <App />
+      <App backendUrl={backendUrl}/>
     </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

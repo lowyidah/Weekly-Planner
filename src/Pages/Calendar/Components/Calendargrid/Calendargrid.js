@@ -7,7 +7,7 @@ import './Calendargrid.css';
 
 
 
-const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calendarRef) => {
+const Calendargrid = React.forwardRef(({ events, loadItems, openPopup, backendUrl }, calendarRef) => {
     
     useEffect(() => {
         let draggableEls = document.querySelectorAll(".external-events");
@@ -66,7 +66,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
         }
 
         if (action === 'receive') {
-            await fetch('https://planner-server-1515.herokuapp.com/scheduleitem', {
+            await fetch(backendUrl + '/scheduleitem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -88,7 +88,7 @@ const Calendargrid = React.forwardRef(({ events, loadItems, openPopup }, calenda
 
         else if (action === 'manipulate') {
             id = itemId;
-            fetch('https://planner-server-1515.herokuapp.com/updatecalendaritem', {
+            fetch(backendUrl + '/updatecalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({

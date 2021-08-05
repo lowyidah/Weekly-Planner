@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Footer from '../../Components/Footer/Footer.js';
 import './Register.css'
 
-const Register = ({ changeRoute, setUser, reloadUser }) => {
+const Register = ({ changeRoute, setUser, reloadUser, backendUrl }) => {
 
     useEffect(() => {
         reloadUser();
@@ -25,7 +25,7 @@ const Register = ({ changeRoute, setUser, reloadUser }) => {
     }
 
     const onButtonRegister = () => {
-        fetch('https://planner-server-1515.herokuapp.com/register', {
+        fetch(backendUrl + '/register', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             credentials: 'include',

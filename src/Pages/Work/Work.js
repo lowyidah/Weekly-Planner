@@ -8,7 +8,7 @@ import ItemList from './Components/ItemList/ItemList.js';
 
 
 
-const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
+const Work = ( {pageType, reloadUser, changeRoute, user, signOut, backendUrl }) => {
 
 
   let pageName, category;
@@ -48,7 +48,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
 
   const loadItems = useCallback(() => {
-    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
+    fetch(backendUrl + '/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -60,10 +60,10 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     .then(response => response.json())
     .then(items => setItems(items))
     .catch(err => console.log('Error loading items:', err));
-  }, [user.id, category]);
+  }, [user.id, category, backendUrl]);
 
   const loadDoingItems = useCallback(() => {
-    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
+    fetch(backendUrl + '/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -75,10 +75,10 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     .then(response => response.json())
     .then(doingItems => setDoingItems(doingItems))
     .catch(err => console.log('Error loading done items:', err));
-  }, [user.id, category]);
+  }, [user.id, category, backendUrl]);
 
   const loadDoneItems = useCallback(() => {
-    fetch('https://planner-server-1515.herokuapp.com/loaditems', {
+    fetch(backendUrl + '/loaditems', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -90,7 +90,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     .then(response => response.json())
     .then(doneItems => setDoneItems(doneItems))
     .catch(err => console.log('Error loading done items:', err));
-  }, [user.id, category]);
+  }, [user.id, category, backendUrl]);
 
   const loadAllItems = useCallback(() => {
     loadItems();
@@ -130,7 +130,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
       return;
     }
 
-    fetch('https://planner-server-1515.herokuapp.com/additem', {
+    fetch(backendUrl + '/additem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -167,7 +167,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
 
     let newItem = Object.assign({}, input);
 
-    fetch('https://planner-server-1515.herokuapp.com/edititem', {
+    fetch(backendUrl + '/edititem', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -201,7 +201,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonDelete = (id, type) => {
-    fetch('https://planner-server-1515.herokuapp.com/deleteitem', {
+    fetch(backendUrl + '/deleteitem', {
       method: 'delete',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -223,7 +223,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonTransfer = (id, listTo) => {
-    fetch('https://planner-server-1515.herokuapp.com/transferitem', {
+    fetch(backendUrl + '/transferitem', {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -236,7 +236,7 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
   }
 
   const onButtonReorder = (id, direction, list) => {
-    fetch('https://planner-server-1515.herokuapp.com/reorderitems', {
+    fetch(backendUrl + '/reorderitems', {
       method: 'put',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -285,15 +285,15 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     list = (
       <div className='threeLists mv3'>
         <div>
-          <ItemList listType={'todo'} items={items} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
+          <ItemList backendUrl={backendUrl} listType={'todo'} items={items} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
           onButtonTransfer={onButtonTransfer} onButtonDelete={onButtonDelete}/>
         </div> 
         <div>
-          <ItemList listType={'doing'} items={doingItems} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
+          <ItemList backendUrl={backendUrl} listType={'doing'} items={doingItems} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
           onButtonTransfer={onButtonTransfer} onButtonDelete={onButtonDelete}/>
         </div>
         <div>
-          <ItemList listType={'done'} items={doneItems} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
+          <ItemList backendUrl={backendUrl} listType={'done'} items={doneItems} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
           onButtonTransfer={onButtonTransfer} onButtonDelete={onButtonDelete}/>
         </div>
       </div>
@@ -310,11 +310,11 @@ const Work = ( {pageType, reloadUser, changeRoute, user, signOut }) => {
     list = (
       <div className='twoLists'> 
         <div>
-          <ItemList listType={'todo'} items={items} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
+          <ItemList backendUrl={backendUrl} listType={'todo'} items={items} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}
           onButtonTransfer={onButtonTransfer} onButtonDelete={onButtonDelete}/>
         </div>
         <div>
-          <ItemList listType={'doing'} items={doingItems} onButtonTransfer={onButtonTransfer} 
+          <ItemList backendUrl={backendUrl} listType={'doing'} items={doingItems} onButtonTransfer={onButtonTransfer} 
           onButtonDelete={onButtonDelete} onButtonOpenPopup={onButtonEdit} onButtonReorder={onButtonReorder}/>
         </div>
       </div>

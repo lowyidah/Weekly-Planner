@@ -8,9 +8,7 @@ import Itemlist from './Components/Itemlist/Itemlist.js';
 import Popup from './Components/Popup/Popup.js';
 import ItemEditor from '../../Components/ItemEditor/ItemEditor.js';
 
-const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
-  console.log('run');
-
+const Calendar = ({ changeRoute, signOut, user, reloadUser, backendUrl }) => {
     useEffect(() => {
         reloadUser();
     }, [reloadUser]);
@@ -93,7 +91,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
       let newItem = Object.assign({}, input);
   
-      fetch('https://planner-server-1515.herokuapp.com/edititem', {
+      fetch(backendUrl + '/edititem', {
         method: 'put',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -116,7 +114,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
 
     const loadCalendarItems = useCallback((phase) => {
-      fetch('https://planner-server-1515.herokuapp.com/loadcalendaritems', {
+      fetch(backendUrl + '/loadcalendaritems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -129,11 +127,11 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         setHasSetCalendarItems(phase);
       })
       .catch(err => console.log('Error loading scheduled items:', err));
-    }, [user.id])
+    }, [user.id, backendUrl])
 
     const loadItems = useCallback(() => {
         loadCalendarItems('initial', user.id);
-        fetch('https://planner-server-1515.herokuapp.com/loaditems', {
+        fetch(backendUrl + '/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -145,7 +143,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(items => setItems(items))
         .catch(err => console.log('Error loading items:', err));
 
-        fetch('https://planner-server-1515.herokuapp.com/loaditems', {
+        fetch(backendUrl + '/loaditems', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -156,7 +154,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
         .then(response => response.json())
         .then(items => setDoingItems(items))
         .catch(err => console.log('Error loading items:', err));
-    }, [user.id, loadCalendarItems]);
+    }, [user.id, loadCalendarItems, backendUrl]);
 
     const removeItemFromCalendar = (itemId) => {
       const calendarApi = calendarRef.current.getApi();
@@ -166,7 +164,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedItem = (id) => {
-      fetch('https://planner-server-1515.herokuapp.com/transfercalendaritem', {
+      fetch(backendUrl + '/transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -184,7 +182,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const finishedBatchItem = (itemId) => {
-      fetch('https://planner-server-1515.herokuapp.com/transferitem', {
+      fetch(backendUrl + '/transferitem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -210,7 +208,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const todoItem = (id) => {
-      fetch('https://planner-server-1515.herokuapp.com/transferitem', {
+      fetch(backendUrl + '/transferitem', {
         method: 'post',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -225,7 +223,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
 
     const deleteItem = (itemId) => {
         removeItemFromCalendar(itemId);
-        fetch('https://planner-server-1515.herokuapp.com/deleteitem', {
+        fetch(backendUrl + '/deleteitem', {
             method: 'delete',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -237,7 +235,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const doItem = (itemId) => {
-      fetch('https://planner-server-1515.herokuapp.com/transfercalendaritem', {
+      fetch(backendUrl + '/transfercalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -250,7 +248,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
     }
 
     const unscheduleItem = (itemId) => {
-      fetch('https://planner-server-1515.herokuapp.com/deletecalendaritem', {
+      fetch(backendUrl + '/deletecalendaritem', {
           method: 'post',
           headers: {'Content-Type': 'application/json'},
           body: JSON.stringify({
@@ -306,7 +304,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       }
       else {
         let item;
-        fetch('https://planner-server-1515.herokuapp.com/loadcalendaritem', {
+        fetch(backendUrl + '/loadcalendaritem', {
             method: 'post',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
@@ -383,7 +381,7 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
       calendarRef.current.getApi().getEvents().forEach(event => {
           calendarRef.current.getApi().getEventById(event.id).remove();
       })
-  }, [gcalEvents, hasSetCalendarItems, calendarItems])
+  }, [gcalEvents, hasSetCalendarItems, calendarItems, backendUrl])
 
     return (
         <div className='calendarPageWrapper'>
@@ -407,11 +405,11 @@ const Calendar = ({ changeRoute, signOut, user, reloadUser }) => {
           }
           <div className='calendarBodyWrapper'>
             <div className='GcalWrapper'>
-              <Gcal setGcalEvents={setGcalEvents} loadCalendarItems={loadCalendarItems} 
+              <Gcal backendUrl={backendUrl} setGcalEvents={setGcalEvents} loadCalendarItems={loadCalendarItems} 
               calendarItems={calendarItems}/>
             </div>
             <div className='CalendargridWrapper'>
-              <Calendargrid ref={calendarRef} loadItems={loadItems} events={events}
+              <Calendargrid backendUrl={backendUrl} ref={calendarRef} loadItems={loadItems} events={events}
               openPopup={openCalPopup}/>
             </div>
             <div className='ItemListsWrapper'>
